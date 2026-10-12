@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lazy Loading de Imagens: galeria</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- ══════════════════════════════════════════
+       HERO: é o LCP, carrega na hora.
+       Nunca use loading="lazy" aqui.
+       Técnica 3: srcset + sizes
+  ══════════════════════════════════════════ -->
+  <header class="hero">
+    <img
+      src="img/hero-1200.webp"
+      srcset="
+        img/hero-480.webp   480w,
+        img/hero-800.webp   800w,
+        img/hero-1200.webp 1200w
+      "
+      sizes="
+        (max-width: 480px) 480px,
+        (max-width: 800px) 800px,
+        1200px
+      "
+      alt="Montanhas azuis ao amanhecer"
+      width="1200" height="600"
+      fetchpriority="high"
+    />
+    <h1>Lazy Loading <span>de imagens</span></h1>
+  </header>
+
+  <main>
+    <!-- ══════════════════════════════════════════
+         TÉCNICA 1: loading="lazy" nativo
+    ══════════════════════════════════════════ -->
+    <h2>1 · loading="lazy"</h2>
+    <p>O browser só baixa estas imagens quando você chega perto delas.</p>
+    <section class="gallery">
+      <img src="img/foto-1.webp" alt="Paisagem laranja" loading="lazy" width="800" height="600" />
+      <img src="img/foto-2.webp" alt="Paisagem azul" loading="lazy" width="800" height="600" />
+      <img src="img/foto-3.webp" alt="Paisagem dourada" loading="lazy" width="800" height="600" />
+    </section>
+
+    <!-- ══════════════════════════════════════════
+         TÉCNICA 2: LQIP + IntersectionObserver
+         placeholder em base64 (vem com o HTML) → crossfade para a real
+    ══════════════════════════════════════════ -->
+    <h2>2 · LQIP + IntersectionObserver</h2>
+    <p>Role devagar: cada foto começa borrada e fica nítida quando a real termina de baixar.</p>
+    <section class="gallery">
+      <div class="lqip">
+        <img class="placeholder" alt="" aria-hidden="true"
+             src="data:image/webp;base64,UklGRlwAAABXRUJQVlA4IFAAAACwAwCdASoUAA8APu1iqU2ppaQiMAgBMB2JZgCw7CHYl2iXZI8L8AD+joiVPvIt1AUgoOC758puCvlimk/eIlP4+FmJU/WMhfyLeMCaVU0QAA==" />
+        <img class="real" data-src="img/foto-1.webp" alt="Paisagem 1"
+             width="800" height="600" />
+      </div>
+
+      <div class="lqip">
+        <img class="placeholder" alt="" aria-hidden="true"
+             src="data:image/webp;base64,UklGRl4AAABXRUJQVlA4IFIAAACwAwCdASoUAA8APu1iqU2ppaQiMAgBMB2JZACdAB25/U6+sXnHQAD+V3GITp5ppz2IBa8pyz4LBAvkdhDdhy9etLZsWB31V0xIWMou+3qGgAAA" />
+        <img class="real" data-src="img/foto-2.webp" alt="Paisagem 2"
+             width="800" height="600" />
+      </div>
+
+      <div class="lqip">
+        <img class="placeholder" alt="" aria-hidden="true"
+             src="data:image/webp;base64,UklGRlgAAABXRUJQVlA4IEwAAAAQBACdASoUAA8APu1iqk4ppaQiMAgBMB2JZACdMoADThOQszZ2c7vqgAD+3nY0+LgK54fSo2a5sbr05BDyeA7WwmLwULGEHoGDm/QA" />
+        <img class="real" data-src="img/foto-3.webp" alt="Paisagem 3"
+             width="800" height="600" />
+      </div>
+
+      <div class="lqip">
+        <img class="placeholder" alt="" aria-hidden="true"
+             src="data:image/webp;base64,UklGRlYAAABXRUJQVlA4IEoAAADQAwCdASoUAA8APu1iqk2ppaQiMAgBMB2JYgC/OCIjmlxIZW6ZueAA/t9BWuZxsjVIJWICpS5UyJyzOGvWBxEflLrHBWFsKIAAAA==" />
+        <img class="real" data-src="img/foto-4.webp" alt="Paisagem 4"
+             width="800" height="600" />
+      </div>
+
+      <div class="lqip">
+        <img class="placeholder" alt="" aria-hidden="true"
+             src="data:image/webp;base64,UklGRlgAAABXRUJQVlA4IEwAAACQAwCdASoUAA8APu1kqU4ppaOiMAgBMB2JQBOgBDsD4jSAN3vAAP7UDIlNHcstZYzzemudJiWI2DLU5Qo4tp/OQggYghd7YwRau4AA" />
+        <img class="real" data-src="img/foto-5.webp" alt="Paisagem 5"
+             width="800" height="600" />
+      </div>
+
+      <div class="lqip">
+        <img class="placeholder" alt="" aria-hidden="true"
+             src="data:image/webp;base64,UklGRl4AAABXRUJQVlA4IFIAAACQAwCdASoUAA8APu1iqk2ppaQiMAgBMB2JYjuAEyAAwh2xXZqAAP7qbx1tHxqbX3mHr3/rzKtl3+A9s2+69if7HIv/3VKQ8alL6FlbThDYAAAA" />
+        <img class="real" data-src="img/foto-6.webp" alt="Paisagem 6"
+             width="800" height="600" />
+      </div>
+
+      <div class="lqip">
+        <img class="placeholder" alt="" aria-hidden="true"
+             src="data:image/webp;base64,UklGRlwAAABXRUJQVlA4IFAAAADQAwCdASoUAA8APu1iqU2ppaOiMAgBMB2JZACdMoADTcdCTXb0uAAA/t87YXih2Kt1T0zPzCMh85TtQdjfUYtSLUg+DjxnUWBRDrbqz/wAAA==" />
+        <img class="real" data-src="img/foto-7.webp" alt="Paisagem 7"
+             width="800" height="600" />
+      </div>
+
+      <div class="lqip">
+        <img class="placeholder" alt="" aria-hidden="true"
+             src="data:image/webp;base64,UklGRlQAAABXRUJQVlA4IEgAAADQAwCdASoUAA8APu1kqk4ppaQiMAgBMB2JQBadBDvSmELa7MX/YOAA/uqys/WKgnSbtok58AeW9yxBBaRrAPbqm/N9p9HoAAA=" />
+        <img class="real" data-src="img/foto-8.webp" alt="Paisagem 8"
+             width="800" height="600" />
+      </div>
+
+      <div class="lqip">
+        <img class="placeholder" alt="" aria-hidden="true"
+             src="data:image/webp;base64,UklGRlgAAABXRUJQVlA4IEwAAACwAwCdASoUAA8APu1iqU2ppaQiMAgBMB2JZACdAB5zsh4HXZepAAD+sKxlmagXE+AJDXGm7hTffbkM+R2ELRhAc+MBU3s6K+qowoAA" />
+        <img class="real" data-src="img/foto-9.webp" alt="Paisagem 9"
+             width="800" height="600" />
+      </div>
+    </section>
+  </main>
+
+  <script src="lazy.js" defer></script>
+</body>
+</html>
